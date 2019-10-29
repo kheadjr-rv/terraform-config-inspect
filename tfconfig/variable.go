@@ -1,5 +1,13 @@
 package tfconfig
 
+import (
+	"encoding/json"
+)
+
+type Default struct {
+	Value interface{}
+}
+
 // Variable represents a single variable from a Terraform module.
 type Variable struct {
 	Name        string `json:"name"`
@@ -10,7 +18,12 @@ type Variable struct {
 	// the native Go type system. The conversion from the value given in
 	// configuration may be slightly lossy. Only values that can be
 	// serialized by json.Marshal will be included here.
-	Default interface{} `json:"default,omitempty"`
+	// Default interface{} `json:"default,omitempty"`
+	Default *Default `json:"default,omitempty"`
 
 	Pos SourcePos `json:"pos"`
+}
+
+func (d *Default) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&d.Value)
 }

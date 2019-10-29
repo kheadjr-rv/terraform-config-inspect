@@ -148,7 +148,8 @@ func loadModule(dir string) (*Module, Diagnostics) {
 							// guaranteed valid by ctyjson.Marshal.
 							panic(fmt.Errorf("failed to re-parse default value from JSON: %s", err))
 						}
-						v.Default = def
+						// v.Default = def
+						v.Default = &Default{Value: def}
 					}
 				}
 
