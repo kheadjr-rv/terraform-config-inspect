@@ -55,7 +55,8 @@ func showModuleMarkdown(module *tfconfig.Module) {
 		"typeExpr": func(s string) string {
 			s = strings.TrimPrefix(s, "\"")
 			s = strings.TrimSuffix(s, "\"")
-			return "`" + s + "`"
+			s = strings.ReplaceAll(s, "\\r\\n", "\n")
+			return "\n```\n" + s + "\n```"
 		},
 		"commas": func(s []string) string {
 			return strings.Join(s, ", ")
@@ -104,7 +105,7 @@ Provider Requirements:
 
 ## Input Variables
 {{- range .Variables }}
-* {{ tt .Name }}{{ if .Default }} (default {{ json .Default | tt }}){{else}} (required {{ json .Type | typeExpr }}){{end}}
+* {{ tt .Name }}{{ if .Default }} (default {{ json .Default | tt }}){{else}} (required) {{ json .Type | typeExpr }}{{end}}
 {{- if .Description}}: {{ .Description }}{{ end }}
 {{- end}}{{end}}
 
